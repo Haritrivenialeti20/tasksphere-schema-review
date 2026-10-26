@@ -1,0 +1,57 @@
+erDiagram
+  USERS {
+    uuid user_id PK
+    text email UK
+    text display_name
+    timestamptz created_at
+  }
+  TEAMS {
+    uuid team_id PK
+    text name
+    timestamptz created_at
+  }
+  TEAM_MEMBERS {
+    uuid team_id PK, FK
+    uuid user_id PK, FK
+    timestamptz joined_at
+  }
+  PROJECTS {
+    uuid project_id PK
+    uuid team_id FK
+    uuid owner_id FK
+    text name
+    text status
+    timestamptz created_at
+  }
+  PROJECT_MEMBERS {
+    uuid project_id PK, FK
+    uuid user_id PK, FK
+    timestamptz joined_at
+  }
+  TASKS {
+    uuid task_id PK
+    uuid project_id FK
+    uuid created_by FK
+    uuid parent_task_id FK
+    text title
+    text status
+    smallint priority
+    timestamptz due_at
+  }
+  TASK_ASSIGNEES {
+    uuid task_id PK, FK
+    uuid user_id PK, FK
+    timestamptz assigned_at
+  }
+
+  TEAMS ||--o{ TEAM_MEMBERS : has
+  USERS ||--o{ TEAM_MEMBERS : joins
+  TEAMS ||--o{ PROJECTS : owns
+  USERS ||--o{ PROJECTS : owns
+  PROJECTS ||--o{ PROJECT_MEMBERS : includes
+  USERS ||--o{ PROJECT_MEMBERS : joins
+  PROJECTS ||--o{ TASKS : contains
+  USERS ||--o{ TASKS : creates
+  TASKS ||--o{ TASKS : decomposes
+  TASKS ||--o{ TASK_ASSIGNEES : has
+  USERS ||--o{ TASK_ASSIGNEES : assigned
