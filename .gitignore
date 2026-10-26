@@ -1,0 +1,7 @@
+*.wav
+*.mp4
+video_frames/
+frames.txt
+create_storyboard.py
+.DS_Store
+.env
